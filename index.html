@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeNet Group | فري نت جروب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #10b981;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --vodafone: #e60000;
+            --etisalat: #009639;
+            --we: #5c2d91;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2563eb, #10b981);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .logo-text h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .nav-admin-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-admin-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        main {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            flex-grow: 1;
+        }
+
+        /* View Containers */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Client Ordering Steps */
+        .step-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .net-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .net-card i {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .net-card span {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .net-card.vf { color: var(--vodafone); }
+        .net-card.et { color: var(--etisalat); }
+        .net-card.we { color: #a855f7; }
+
+        .net-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .net-card.selected.vf {
+            border-color: var(--vodafone);
+            background: rgba(230, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(230, 0, 0, 0.2);
+        }
+
+        .net-card.selected.et {
+            border-color: var(--etisalat);
+            background: rgba(0, 150, 57, 0.1);
+            box-shadow: 0 0 15px rgba(0, 150, 57, 0.2);
+        }
+
+        .net-card.selected.we {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.1);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .package-list {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .package-card:hover {
+            border-color: var(--primary);
+        }
+
+        .package-card.selected {
+            border-color: var(--accent);
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .pkg-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .pkg-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .pkg-price {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Admin Styles */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .stat-card p {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+        .data-table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.2);
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-vf { background: rgba(230, 0, 0, 0.2); color: #ff6b6b; }
+        .badge-et { background: rgba(0, 150, 57, 0.2); color: #51cf66; }
+        .badge-we { background: rgba(168, 85, 247, 0.2); color: #cc5de8; }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon"><i class="fa-solid fa-wifi"></i></div>
+            <div class="logo-text">
+                <h1>FreeNet Group</h1>
+                <p>باقات الموبايل والانترنت</p>
+            </div>
+        </div>
+        <button class="nav-admin-btn" id="toggleAdminBtn" onclick="toggleView()">
+            <i class="fa-solid fa-lock"></i>
+            <span id="navBtnText">لوحة التحكم</span>
+        </button>
+    </header>
+
+    <main>
+        <!-- CLIENT ORDERING VIEW -->
+        <section id="clientView" class="view-section active">
+            <div class="step-title"><i class="fa-solid fa-1"></i> اختر الشبكة</div>
+            <div class="network-grid">
+                <div class="net-card vf" onclick="selectNetwork('فودافون', this)">
+                    <i class="fa-solid fa-circle-notch"></i>
+                    <span>فودافون</span>
+                </div>
+                <div class="net-card et" onclick="selectNetwork('اتصالات', this)">
+                    <i class="fa-solid fa-leaf"></i>
+                    <span>اتصالات</span>
+                </div>
+                <div class="net-card we" onclick="selectNetwork('WE', this)">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>WE</span>
+                </div>
+            </div>
+
+            <div id="packageSection" style="display: none;">
+                <div class="step-title"><i class="fa-solid fa-2"></i> اختر الباقة المناسبة</div>
+                <div class="package-list" id="packageList">
+                    <!-- Packages injected dynamically -->
+                </div>
+            </div>
+
+            <div id="formSection" style="display: none;">
+                <div class="step-title"><i class="fa-solid fa-3"></i> بيانات الطلب</div>
+                <div class="form-group">
+                    <label>رقم الهاتف المراد تجديد الباقة له</label>
+                    <input type="tel" id="clientPhone" class="form-input" placeholder="01xxxxxxxx" required>
+                </div>
+                
+                <div class="form-group" id="passField" style="display: none;">
+                    <label>كلمة السر (الخاصة بالتطبيق/الحساب)</label>
+                    <input type="password" id="clientPass" class="form-input" placeholder="********">
+                </div>
+
+                <button class="btn-submit" onclick="submitOrder()">
+                    <i class="fa-brands fa-whatsapp"></i> إرسال الطلب عبر الواتساب
+                </button>
+            </div>
+        </section>
+
+        <!-- ADMIN DASHBOARD VIEW -->
+        <section id="adminView" class="view-section">
+            <div id="adminAuth">
+                <div class="step-title"><i class="fa-solid fa-shield-halved"></i> تسجيل دخول الادمن</div>
+                <div class="form-group">
+                    <label>كلمة المرور الخاصة بلوحة التحكم</label>
+                    <input type="password" id="adminPassInput" class="form-input" placeholder="أدخل كلمة السر">
+                </div>
+                <button class="btn-submit" style="background: var(--primary);" onclick="loginAdmin()">دخول</button>
+            </div>
+
+            <div id="adminContent" style="display: none;">
+                <div class="admin-header">
+                    <h2>لوحة الإدارة والإحصائيات</h2>
+                    <button class="nav-admin-btn" style="color: #ef4444;" onclick="logoutAdmin()">خروج</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>إجمالي الطلبات / العملاء</h4>
+                        <p id="totalOrdersCount">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>الأكثر طلباً</h4>
+                        <p id="topPackageName" style="font-size: 1rem; color:#34d399;">-</p>
+                    </div>
+                </div>
+
+                <div class="step-title"><i class="fa-solid fa-user-plus"></i> تسجل عميل / اشتراك جديد</div>
+                <div class="form-group">
+                    <label>رقم العميل</label>
+                    <input type="tel" id="admPhone" class="form-input" placeholder="01xxxxxxxxx">
+                </div>
+                <div class="form-group">
+                    <label>الباقة والشبكة</label>
+                    <input type="text" id="admPkg" class="form-input" placeholder="مثال: فودافون - 40 جيجا">
+                </div>
+                <div class="form-group">
+                    <label>كلمة السر (إن وجدت)</label>
+                    <input type="text" id="admPass" class="form-input" placeholder="الباسورد">
+                </div>
+                <div class="form-group">
+                    <label>نوع الاشتراك</label>
+                    <select id="admType" class="form-input">
+                        <option value="فردي (28 يوم)">فردي (28 يوم)</option>
+                        <option value="أصحاب (32 يوم)">أصحاب (32 يوم)</option>
+                    </select>
+                </div>
+                <button class="btn-submit" style="background: var(--accent); margin-bottom: 2rem;" onclick="addRecord()">
+                    <i class="fa-solid fa-plus"></i> حفظ بيانات الاشتراك
+                </button>
+
+                <div class="step-title"><i class="fa-solid fa-database"></i> سجل الاشتراكات المخزنة</div>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>الباقة</th>
+                                <th>الباسورد</th>
+                                <th>النوع</th>
+                                <th>التاريخ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                            <!-- Injected records -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; FreeNet Group 2026 | التواصل الدائم 01001621853
+    </footer>
+
+    <script>
+        const targetWhatsApp = "01001621853";
+        const packagesData = {
+            "فودافون": [
+                { name: "بااقة 20 جيجا", price: "50 ج.م" },
+                { name: "باقة 40 جيجا", price: "90 ج.م" },
+                { name: "مكسات فودافون التوفير", price: "70 ج.م" }
+            ],
+            "اتصالات": [
+                { name: "بااقة 25 جيجا", price: "60 ج.م" },
+                { name: "باقة 50 جيجا", price: "110 ج.م" }
+            ],
+            "WE": [
+                { name: "بااقة 30 جيجا", price: "65 ج.م" },
+                { name: "باقة 60 جيجا", price: "120 ج.م" }
+            ]
+        };
+
+        let currentNetwork = "";
+        let currentPackage = null;
+        let isAdminLoggedIn = false;
+
+        function selectNetwork(net, el) {
+            currentNetwork = net;
+            document.querySelectorAll('.net-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+
+            const listEl = document.getElementById('packageList');
+            listEl.innerHTML = "";
+
+            packagesData[net].forEach(pkg => {
+                const card = document.createElement('div');
+                card.className = 'package-card';
+                card.innerHTML = `
+                    <div class="pkg-info">
+                        <h3>${pkg.name}</h3>
+                        <p>شبكة ${net}</p>
+                    </div>
+                    <div class="pkg-price">${pkg.price}</div>
+                `;
+                card.onclick = () => selectPackage(pkg, card);
+                listEl.appendChild(card);
+            });
+
+            document.getElementById('packageSection').style.display = 'block';
+            document.getElementById('formSection').style.display = 'none';
+        }
+
+        function selectPackage(pkg, el) {
+            currentPackage = pkg;
+            document.querySelectorAll('.package-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+
+            document.getElementById('formSection').style.display = 'block';
+            const passField = document.getElementById('passField');
+            if (currentNetwork === "فودافون") {
+                passField.style.display = "block";
+            } else {
+                passField.style.display = "none";
+            }
+        }
+
+        function submitOrder() {
+            const phone = document.getElementById('clientPhone').value;
+            const pass = document.getElementById('clientPass').value;
+
+            if (!phone) {
+                alert("برجاء إدخال رقم الهاتف");
+                return;
+            }
+
+            // Record Analytics locally
+            let analytics = JSON.parse(localStorage.getItem('freenet_analytics') || '[]');
+            analytics.push({
+                network: currentNetwork,
+                package: currentPackage.name,
+                price: currentPackage.price,
+                date: new Date().toLocaleDateString('ar-EG')
+            });
+            localStorage.setItem('freenet_analytics', JSON.stringify(analytics));
+
+            // Format WhatsApp Message
+            let msg = `السلام عليكم، حابب أطلب باقة جديدة من FreeNet Group:%0A`;
+            msg += `📱 *الشبكة:* ${currentNetwork}%0A`;
+            msg += `📦 *الباقة:* ${currentPackage.name} (${currentPackage.price})%0A`;
+            msg += `📞 *رقم الهاتف:* ${phone}%0A`;
+            if (currentNetwork === "فودافون" && pass) {
+                msg += `🔑 *كلمة السر:* ${pass}%0A`;
+            }
+
+            const target = "20" + targetWhatsApp.substring(1);
+            window.open(`https://wa.me/${target}?text=${msg}`, '_blank');
+        }
+
+        // Admin functionality
+        function toggleView() {
+            const clientV = document.getElementById('clientView');
+            const adminV = document.getElementById('adminView');
+            const navBtnText = document.getElementById('navBtnText');
+
+            if (clientV.classList.contains('active')) {
+                clientV.classList.remove('active');
+                adminV.classList.add('active');
+                navBtnText.textContent = "الرئيسية";
+            } else {
+                adminV.classList.remove('active');
+                clientV.classList.add('active');
+                navBtnText.textContent = "لوحة التحكم";
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === "1234") { // Default simple password
+                isAdminLoggedIn = true;
+                document.getElementById('adminAuth').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                loadAdminData();
+            } else {
+                alert("كلمة المرور غير صحيحة (كلمة المرور الافتراضية: 1234)");
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminAuth').style.display = 'block';
+            document.getElementById('adminContent').style.display = 'none';
+        }
+
+        function addRecord() {
+            const phone = document.getElementById('admPhone').value;
+            const pkg = document.getElementById('admPkg').value;
+            const pass = document.getElementById('admPass').value || "-";
+            const type = document.getElementById('admType').value;
+
+            if (!phone || !pkg) {
+                alert("يرجى إدخال الرقم والباقة");
+                return;
+            }
+
+            let records = JSON.parse(localStorage.getItem('freenet_records') || '[]');
+            records.unshift({
+                phone, pkg, pass, type,
+                date: new Date().toLocaleDateString('ar-EG')
+            });
+            localStorage.setItem('freenet_records', JSON.stringify(records));
+
+            // Reset inputs
+            document.getElementById('admPhone').value = "";
+            document.getElementById('admPkg').value = "";
+            document.getElementById('admPass').value = "";
+
+            loadAdminData();
+            alert("تم حفظ البيانات بنجاح!");
+        }
+
+        function loadAdminData() {
+            // Load Records
+            let records = JSON.parse(localStorage.getItem('freenet_records') || '[]');
+            const tbody = document.getElementById('recordsTableBody');
+            tbody.innerHTML = "";
+
+            records.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${r.phone}</td>
+                    <td>${r.pkg}</td>
+                    <td>${r.pass}</td>
+                    <td><span class="badge ${r.type.includes('فردي') ? 'badge-vf' : 'badge-et'}">${r.type}</span></td>
+                    <td>${r.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Load Analytics
+            let analytics = JSON.parse(localStorage.getItem('freenet_analytics') || '[]');
+            document.getElementById('totalOrdersCount').textContent = analytics.length + records.length;
+
+            if (analytics.length > 0) {
+                const counts = {};
+                analytics.forEach(a => { counts[a.package] = (counts[a.package] || 0) + 1; });
+                let topPkg = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
+                document.getElementById('topPackageName').textContent = topPkg;
+            }
+        }
+    </script>
+</body>
+</html>
